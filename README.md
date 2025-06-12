@@ -10,6 +10,8 @@ This repository contains the backend of the **Nursery Website**, developed using
 ## 🚀 Getting Started
 
 Follow the steps below to set up the project locally on your system.
+also for the AUTH part you need to use .exp.env -> .env file and add the environment variables to it
+follow this YT Video for getting google credentials ``` https://www.youtube.com/watch?v=LyDdfO6o_G4  ```
 
 ### 1. Clone the Repository
 

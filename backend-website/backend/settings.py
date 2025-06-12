@@ -127,6 +127,35 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+SOCIALACCOUNT_PROVIDERS = {
+    
+    "google": {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        "APPS": [
+            {
+                "client_id": os.getenv("CLIENT_ID"),
+                "secret": os.getenv("SECRET_KEY"),
+                "key": "",
+                "settings": {
+                    # You can fine tune these settings per app:
+                    "scope": [
+                        "profile",
+                        "email",
+                    ],
+                    "auth_params": {
+                        "access_type": "online",
+                    },
+                },
+            },
+        ],
+        # The following provider-specific settings will be used for all apps:
+        
+    }
+}
+
 # Django allauth config
 
 AUTHENTICATION_BACKENDS = [
@@ -153,6 +182,7 @@ SOCIALACCOUNT_PROVIDERS = {}
 
 
 LANGUAGE_CODE = 'en-us'
+
 
 TIME_ZONE = 'UTC'
 

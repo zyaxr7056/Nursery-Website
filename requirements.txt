@@ -1,0 +1,7 @@
+Django >=5.2
+dotenv
+psycopg 
+Pillow
+django-allauth[socialaccount]
+django-allauth-ui
+django-widgets-tweaks

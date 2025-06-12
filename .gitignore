@@ -1,4 +1,6 @@
 # Byte-compiled / optimized / DLL files
+myven/
+venv/
 __pycache__/
 *.py[cod]
 *$py.class

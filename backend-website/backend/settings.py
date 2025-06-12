@@ -136,8 +136,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # credentials, or list them here:
         "APPS": [
             {
-                "client_id": os.getenv("CLIENT_ID"),
-                "secret": os.getenv("SECRET_KEY"),
+                "client_id": os.environ.get("CLIENT_ID"),
+                "secret": os.environ.get("SECRET_KEY"),
                 "key": "",
                 "settings": {
                     # You can fine tune these settings per app:

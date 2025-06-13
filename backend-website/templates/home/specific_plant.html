@@ -1,0 +1,146 @@
+{% extends "main.html" %}
+
+{% block content %}
+<style>
+body {
+    background-color: #f3fdf5;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.detail-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 60px auto;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.image-side {
+    flex: 1 1 300px;
+    background-color: #e8f5e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.image-side img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+}
+
+.image-side img:hover {
+    transform: scale(1.03);
+}
+
+.info-side {
+    flex: 2 1 400px;
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #2e7d32;
+}
+
+.info-side h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: #1b5e20;
+}
+
+.info-side .category,
+.info-side .price {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.info-side .description {
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #33691e;
+    white-space: pre-line;
+}
+
+.purchase-button {
+    margin-top: 25px;
+    align-self: flex-start;
+    padding: 12px 24px;
+    background-color: #43a047;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    text-decoration: none;
+}
+
+.purchase-button:hover {
+    background-color: #2e7d32;
+    transform: scale(1.05);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .detail-wrapper {
+        flex-direction: column;
+        margin: 40px 20px;
+    }
+
+    .image-side, .info-side {
+        flex: 1 1 100%;
+        padding: 20px;
+    }
+
+    .info-side h2 {
+        font-size: 24px;
+    }
+
+    .info-side .category,
+    .info-side .price {
+        font-size: 16px;
+    }
+
+    .info-side .description {
+        font-size: 14px;
+    }
+
+    .purchase-button {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        font-size: 15px;
+    }
+}
+</style>
+
+<div class="detail-wrapper">
+    <div class="image-side">
+        <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+    </div>
+    <div class="info-side">
+        <h2>🌿 {{ plant.name }}</h2>
+        <div class="category">📂 <strong>Category:</strong> {{ plant.Category }}</div>
+        <div class="price">💰 <strong>Price:</strong> ₹{{ plant.price }}</div>
+
+        <div class="description">
+            📝 <strong>Description:</strong><br>
+            {{ plant.Desciption }}
+        </div>
+
+        <a href="#" class="purchase-button">🛒 Purchase</a>
+    </div>
+</div>
+
+{% endblock content %}

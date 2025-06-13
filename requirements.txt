@@ -4,4 +4,6 @@ psycopg
 Pillow
 django-allauth[socialaccount]
 django-allauth-ui
-django-widgets-tweaks
+# django-widgets-tweaks
+dj-database-url
+python-decouple

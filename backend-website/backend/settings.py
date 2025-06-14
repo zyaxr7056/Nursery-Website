@@ -38,6 +38,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "unfold",
+    "unfold.contrib.import_export",
+    "unfold.contrib.filters",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,6 +58,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     "widget_tweaks",
     "slippers",
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -208,3 +212,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+UNFOLD = {
+    "SITE_HEADER" :"Rudra Nursery Admin",
+    
+}

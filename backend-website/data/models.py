@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
-
+from unfold.admin import ModelAdmin
 
 plant_choices = [
     ('Indoor', 'Indoor'),

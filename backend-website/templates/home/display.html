@@ -1,6 +1,7 @@
 {% extends "main.html" %}
 
 {% block content %}
+{% include 'home/navbar.html' %}
 <style>
 body {
     background-color: #f0fdf4;
@@ -148,7 +149,7 @@ body {
             <h1>{{ plant.name }}</h1>
             <p>{{ plant.Category }} | ₹{{ plant.price }} | {{ plant.Quantity }} in stock</p>
         </div>
-        <a href="{% url 'SpecificPlant' plant.id %}" class="purchase-button">🛒 Add to Cart</a>
+        <a href="{% url 'SpecificPlant' plant.id %}" class="purchase-button">Look at it</a>
     </div>
     {% endfor %}
 </div>

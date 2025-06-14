@@ -148,7 +148,7 @@ body {
             <h1>{{ plant.name }}</h1>
             <p>{{ plant.Category }} | ₹{{ plant.price }} | {{ plant.Quantity }} in stock</p>
         </div>
-        <a href="{% url 'SpecificPlant' plant.id %}" class="purchase-button">🛒 Purchase</a>
+        <a href="{% url 'SpecificPlant' plant.id %}" class="purchase-button">🛒 Add to Cart</a>
     </div>
     {% endfor %}
 </div>

@@ -18,5 +18,7 @@ def display(request):
 @login_required
 def SpecificPlant(request,plant_id):
     plant = Plant.objects.get(id=plant_id)
-    return render(request, 'home/specific_plant.html', {'plant': plant})
+    similar_plants = Plant.objects.filter(Category=plant.Category).exclude(id=plant_id)#[:4]
+    return render(request, 'home/specific_plant.html', {'plant': plant,'similar_plants': similar_plants})
+
 

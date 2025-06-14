@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from unfold.admin import ModelAdmin
-
+from django.utils import timezone
 plant_choices = [
     ('Indoor', 'Indoor'),
     ('Outdoor', 'Outdoor'),
@@ -22,6 +22,7 @@ class Plant(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    custom_time = models.DateTimeField(default=timezone.now)
     Category = models.CharField(choices=plant_choices)
 
     def __str__(self):

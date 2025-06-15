@@ -8,7 +8,7 @@
   <style>
     body { background-color: #f3fdf5; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     .detail-wrapper { display: flex; flex-wrap: wrap; max-width: 1000px; margin: 60px auto; background-color: #ffffff; border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); overflow: hidden; gap: 20px; padding: 20px; }
-    .image-side { flex:1 1 300px; background-color:#e8f5e9; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .image-side { flex:1 1 300px; background-color:#e8f5e9; display:flex; align-items:center; justify-content:center; padding:20px; position:relative; }
     .image-side img { max-width:100%; max-height:300px; border-radius:12px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform 0.3s; }
     .image-side img:hover { transform:scale(1.03); }
     .info-side { flex:2 1 400px; padding:30px 40px; display:flex; flex-direction:column; justify-content:center; color:#2e7d32; background-color:#f9fff9; }
@@ -29,25 +29,80 @@
     .similar-card h4 { font-size:20px; color:#2e7d32; margin:12px 0 8px; }
     .similar-card p { font-size:16px; color:#4e704e; margin-bottom:14px; }
     .similar-card .purchase-button { padding:10px 20px; margin:0 auto 16px; font-size:16px; }
+    .out-of-stock-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #ff5252;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .stock-status {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .in-stock {
+      color: #43a047;
+      font-weight: bold;
+    }
+
+    .out-of-stock {
+      color: #ff5252;
+      font-weight: bold;
+    }
+
+    .out-of-stock-button {
+      background-color: #ccc !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+    }
+
+    .out-of-stock-button:hover {
+      background-color: #ccc !important;
+      transform: none !important;
+    }
+
     @media(max-width:768px) { .detail-wrapper { flex-direction:column; margin:40px 20px; } .info-side{padding:20px;} .info-side h2{font-size:24px;} .similar-plants{padding:20px 10px;margin-top:15px;} .similar-plants h3{font-size:22px;margin-bottom:20px;} }
   </style>
 
   <div class="detail-wrapper">
     <div class="image-side">
       <img src="{{ plant.image.url }}" alt="{{ plant.name }}">
+      {% if plant.Quantity == 0 %}
+        <div class="out-of-stock-badge">Out of Stock</div>
+      {% endif %}
     </div>
 
     <div class="info-side">
       <h2>🌿 {{ plant.name }}</h2>
       <div class="category">📂 <strong>Category:</strong> {{ plant.Category }}</div>
       <div class="price">💰 <strong>Price:</strong> ₹{{ plant.price }}</div>
+      <div class="stock-status">
+        📦 <strong>Availability:</strong> 
+        {% if plant.Quantity > 0 %}
+          <span class="in-stock">In Stock ({{ plant.Quantity }} available)</span>
+        {% else %}
+          <span class="out-of-stock">Out of Stock</span>
+        {% endif %}
+      </div>
       <div class="description">
         📝 <strong>Description:</strong><br>
         {{ plant.Desciption }}
       </div>
-      <button class="purchase-button js-add-cart" data-url="{% url 'add_to_cart' plant.id %}" data-plant-id="{{ plant.id }}">
-        🛒 Add to Cart
-      </button>
+      {% if plant.Quantity > 0 %}
+        <button class="purchase-button js-add-cart" data-url="{% url 'add_to_cart' plant.id %}" data-plant-id="{{ plant.id }}">
+          🛒 Add to Cart
+        </button>
+      {% else %}
+        <button class="purchase-button out-of-stock-button" disabled>
+          ❌ Out of Stock
+        </button>
+      {% endif %}
     </div>
 
     <div class="similar-plants">

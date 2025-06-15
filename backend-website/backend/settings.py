@@ -77,7 +77,12 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'templates' / 'socialaccount',
+            BASE_DIR / 'templates' / 'socialaccount' / 'providers',
+            BASE_DIR / 'templates' / 'socialaccount' / 'providers' / 'google',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -162,16 +167,18 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+
+# Razor pay Cred
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+
+
 # Django allauth config
 
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
+AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
-
-]
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -218,3 +225,13 @@ UNFOLD = {
     "SITE_HEADER" :"Rudra Nursery Admin",
     
 }
+
+# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 86400  # 24 hours in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Login settings
+LOGIN_URL = 'account_login'  # for django-allauth
+LOGIN_REDIRECT_URL = 'display'
+LOGOUT_REDIRECT_URL = 'home'

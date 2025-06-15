@@ -9,4 +9,4 @@ dj-database-url
 python-decouple
 django-unfold
 django-import-export[all]
-isort
+razorpay

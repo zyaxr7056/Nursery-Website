@@ -111,9 +111,14 @@ body { background-color: #f3fdf5; font-family: 'Segoe UI', sans-serif; margin: 0
       <span>Total:</span>
       <span id="sum-total">₹{{ order.total }}</span>
     </div>
-    <button id="payment-button" class="proceed-button">
-      💳 Proceed to Payment
-    </button>
+    <form action="{% url 'payment' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="amount" value="{{ order.total }}">
+        <input type="hidden" name="name" value="{{ request.user.username }}">
+        <button type="submit" class="proceed-button">
+            💳 Proceed to Payment
+        </button>
+    </form>
   </div>
   {% endif %}
 

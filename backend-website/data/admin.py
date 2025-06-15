@@ -10,13 +10,13 @@ from unfold.forms import (AdminPasswordChangeForm, UserChangeForm,
 from unfold.admin import ModelAdmin
 from unfold.contrib.filters.admin import RangeDateFilter
 
-from .models import Plant, User_details
+from .models import Plant, User_details,Order, OrderItem
 
 # admin.site.register(Plant)
 # admin.site.register(User_details)
 # Register your models here.
 admin.site.unregister(User) # Unregister the default User model to customize it
-
+# admin.site.register(Order) # Register the Order model
 @register(User)
 class UserAdmin(BaseUserAdmin,ModelAdmin):
     form = UserChangeForm
@@ -52,4 +52,21 @@ class PlantAdmin(ModelAdmin,ImportExportModelAdmin):
 class UserAdmin(ModelAdmin):
     list_display = ('user_name', 'email', 'Phone_number')
     search_fields = ('user_name', 'email')
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    readonly_fields = ('plant_name', 'quantity', 'price')
+    can_delete = False
+    extra = 0
+
+@admin.register(Order)
+class OrderAdmin(ModelAdmin):
+    list_display = ('id', 'name', 'amount', 'status', 'created_at')
+    list_filter = ('status', ('created_at', RangeDateFilter))
+    search_fields = ('id', 'name', 'provider_order_id', 'payment_id')
+    readonly_fields = ('id', 'provider_order_id', 'payment_id', 'signature_id', 'amount')
+    inlines = [OrderItemInline]
+    
+    def has_add_permission(self, request):
+        return False  # Orders should only be created through the payment process
 

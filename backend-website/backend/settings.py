@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'data',
     'accounts',
@@ -140,33 +141,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-SOCIALACCOUNT_PROVIDERS = {
-    
-    "google": {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        "APPS": [
-            {
-                "client_id": config("CLIENT_ID"),
-                "secret": config("SECRET_KEY"),
-                "key": "",
-                "settings": {
-                    # You can fine tune these settings per app:
-                    "scope": [
-                        "profile",
-                        "email",
-                    ],
-                    "auth_params": {
-                        "access_type": "online",
-                    },
-                },
-            },
-        ],
-        # The following provider-specific settings will be used for all apps:
-        
-    }
-}
 
 
 # Razor pay Cred
@@ -175,11 +149,34 @@ RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
 
 
 # Django allauth config
+SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': config('CLIENT_ID'),
+            'secret': config('SECRET_KEY'),
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -190,11 +187,10 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # Your email address
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') # Use app password for Gmail
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Default sender email
 
-ACCOUNT_LOGIN_METHODS = {'username','email'}
+ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = '[CFE]'
-SOCIALACCOUNT_PROVIDERS = {}
 
 
 # Internationalization

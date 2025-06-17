@@ -65,7 +65,11 @@
       <span>or continue with</span>
     </div>
 
-    <a href="{% provider_login_url 'google' %}" class="btn-google">
+    {% get_providers as socialaccount_providers %}
+    {% for provider in socialaccount_providers %}
+    <p>{{ provider.id }}: <a href="{% provider_login_url provider.id %}">{{ provider.name }}</a></p>
+    {% endfor %}
+
       <img
         src="{% static 'img/google-logo.png' %}"
         class="google-logo"

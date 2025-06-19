@@ -10,11 +10,11 @@ from unfold.forms import (AdminPasswordChangeForm, UserChangeForm,
 from unfold.admin import ModelAdmin
 from unfold.contrib.filters.admin import RangeDateFilter
 
-from .models import Plant, User_details,Order, OrderItem,ContactMessage
+from .models import Plant, User_details,Order, OrderItem,ContactMessage,UserShippingDetails
 
 from django.core.mail import send_mail
 
-
+admin.site.register(UserShippingDetails)
 
 # admin.site.register(Plant)
 # admin.site.register(User_details)

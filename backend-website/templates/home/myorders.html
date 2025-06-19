@@ -1,0 +1,76 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/myorders.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "home/navbar.html" %}
+
+<div class="orders-container">
+    <h1 class="orders-title">My Orders</h1>
+
+    {% if orders %}
+    <div class="orders-grid">
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-meta">
+                    <span class="order-id">Order #{{ order.id }}</span>
+                    <span class="order-date">{{ order.created_at|date:"d M Y, h:i A" }}</span>
+                </div>
+                <span class="order-status {{ order.status|lower }}">{{ order.status }}</span>
+            </div>
+
+            <div class="order-items">
+                {% for item in order.items.all %}
+                
+                <div class="order-item">
+                    <div class="item-image-container">
+                        <img src="{{ item.plant.image.url }}" alt="{{ item.plant.name }}" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-name">{{ item.plant.name }}</h3>
+                        <div class="item-price-details">
+                            <p class="item-meta">
+                                <span class="quantity">Quantity: {{ item.quantity }}</span>
+                                <span class="unit-price">₹{{ item.price }} each</span>
+                            </p>
+                            <div class="item-total">
+                                <span class="total-label">Subtotal:</span>
+                                <span class="total-amount">₹{{ item.get_total_amount }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="order-footer">
+                <div class="order-summary">
+                    <div class="summary-details">
+                        <span class="summary-item">Total Items: {{ order.total_items }}</span>
+                        {% if order.discount %}
+                        <span class="summary-item discount">Discount: -₹{{ order.discount }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="grand-total">
+                        <span>Total Amount:</span>
+                        <span class="total-price">₹{{ order.amount }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-orders">
+        <div class="order-icon">📦</div>
+        <h2>No Orders Yet</h2>
+        <p>When you make a purchase, your orders will appear here.</p>
+        <a href="{% url 'display' %}" class="shop-now-btn">Shop Now</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

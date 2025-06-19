@@ -329,7 +329,6 @@ def order_payment(request):
         print(f"Payment initialization error: {str(e)}")
         messages.error(request, "Unable to initialize payment. Please try again.")
         return redirect('cart_view')
-
 @login_required
 @csrf_exempt
 def callback(request):
@@ -346,7 +345,7 @@ def callback(request):
 
         order = Order.objects.get(provider_order_id=order_id)
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        
+
         params_dict = {
             'razorpay_payment_id': payment_id,
             'razorpay_order_id': order_id,
@@ -359,15 +358,17 @@ def callback(request):
             order.signature_id = signature
             order.status = PaymentStatus.SUCCESS
             order.save()
-            
+
+            order.update_inventory()
+
             # Try to send email but don't fail if it doesn't work
             email_sent = send_order_confirmation(order, request.user)
-            
-            # Clear cart and update inventory
+
+            # Clear cart session
             if 'cart' in request.session:
                 del request.session['cart']
                 request.session.modified = True
-            
+
             return render(request, "callback.html", {
                 "status": "success",
                 "message": "Payment successful!" + (
@@ -377,7 +378,7 @@ def callback(request):
                 "amount": order.amount,
                 "user": request.user
             })
-            
+
         except Exception as e:
             print(f"Payment verification failed: {e}")
             order.status = PaymentStatus.FAILURE
@@ -386,7 +387,7 @@ def callback(request):
                 "status": "failure",
                 "message": "Payment verification failed"
             })
-            
+
     except Order.DoesNotExist:
         return render(request, "callback.html", {
             "status": "failure",
@@ -411,3 +412,8 @@ def contact_page(request):
             submitted=True
             
     return render(request, 'contact_page.html',{'form':form,'submitted':submitted})
+@login_required
+def my_orders(request):
+    
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'home/myorders.html', {'orders': orders})

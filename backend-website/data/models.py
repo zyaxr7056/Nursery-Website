@@ -56,6 +56,9 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.plant_name} x {self.quantity}"
 
+    def get_total_amount(self):
+        return self.quantity * self.price
+
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=254)
@@ -86,6 +89,14 @@ class Order(models.Model):
                     item.plant.Quantity -= item.quantity
                     item.plant.save()
 
+    @property
+    def total_items(self):
+        return sum(item.quantity for item in self.items.all())
+
+    @property
+    def total_amount(self):
+        return sum(item.get_total_amount() for item in self.items.all())
+
 
 class ContactMessage(models.Model):
     fullname = models.CharField(max_length=255)
@@ -96,3 +107,16 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.fullname or 'No Name'} - {self.email or 'No Email'}"
+
+class UserShippingDetails(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=254)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
+    address = models.TextField()
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    pincode = models.CharField(max_length=6)
+    
+    def __str__(self):
+        return f"Shipping details for {self.user.username}"

@@ -11,6 +11,7 @@
   </a>
   <ul style="list-style:none; display:flex; align-items:center; margin:0; padding:0; gap:24px;">
     <li><a href="{% url 'display' %}" style="text-decoration:none; color:#33691e; font-size:16px;">Shop</a></li>
+    <li><a href="{% url 'myorders' %}" style="text-decoration:none; color:#33691e; font-size:16px;">My Orders</a></li>
     <li>
       <a href="{% url 'cart_view' %}" class="cart-icon" style="position:relative; text-decoration:none; color:#33691e; font-size:20px;">
         🛒
@@ -21,6 +22,7 @@
         {% endif %}
       </a>
     </li>
+
     {% if user.is_authenticated %}
       <li class="dropdown">
         <button class="user-menu dropdown-toggle" onclick="toggleDropdown(event)" style="background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:8px; color:#33691e; font-size:16px;">

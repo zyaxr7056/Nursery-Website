@@ -10,7 +10,11 @@ from unfold.forms import (AdminPasswordChangeForm, UserChangeForm,
 from unfold.admin import ModelAdmin
 from unfold.contrib.filters.admin import RangeDateFilter
 
-from .models import Plant, User_details,Order, OrderItem
+from .models import Plant, User_details,Order, OrderItem,ContactMessage
+
+from django.core.mail import send_mail
+
+
 
 # admin.site.register(Plant)
 # admin.site.register(User_details)
@@ -70,3 +74,25 @@ class OrderAdmin(ModelAdmin):
     def has_add_permission(self, request):
         return False  # Orders should only be created through the payment process
 
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('fullname', 'email', 'submitted_at')
+    readonly_fields = ('submitted_at',)
+    ordering = ('-submitted_at',)
+    fields = ('fullname', 'email', 'message', 'response', 'submitted_at')
+
+    def save_model(self, request, obj, form, change):
+        if 'response' in form.changed_data and obj.response:
+            subject = "Reply from Rudra Flower Nursery 🌸"
+            message = f"Dear {obj.fullname},\n\n{obj.response}\n\nRegards,\nRudra Nursery Team"
+            from_email = 'your_email@example.com'
+            recipient_list = [obj.email]
+
+            try:
+                send_mail(subject, message, from_email, recipient_list)
+            except Exception as e:
+                self.message_user(request, f"❌ Error sending email: {e}", level='error')
+            else:
+                self.message_user(request, f"✅ Email sent to {obj.email}", level='success')
+
+        super().save_model(request, obj, form, change)

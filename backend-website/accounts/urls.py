@@ -2,7 +2,7 @@ from django.urls import path, include
 from .views import (
     home, display, SpecificPlant, checkout, cart_view,
     add_to_cart, remove_from_cart, update_cart_quantity,
-    order_payment, callback, shipping_details,profile
+    order_payment, callback, shipping_details,profile,contact_page
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -22,5 +22,6 @@ urlpatterns = [
     path('shipping/', shipping_details, name='shipping_details'),
     path('payment/', order_payment, name='order_payment'),
     path('order/callback/', callback, name='payment_callback'),
+    path('contact/',contact_page,name='contact_page'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

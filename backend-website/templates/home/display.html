@@ -1,24 +1,113 @@
 {% extends "main.html" %}
-{% load static%}
+{% load static %}
 
-
-{% block style %}<link rel="stylesheet" href="{% static 'css/display.css'%}" />{% endblock style %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+{% endblock %}
 
 {% block content %}
 {% include 'home/navbar.html' %}
+<div class="display-container">
+    <h1 class="display-title">Search Plants</h1>
 
-<div class="card-grid">
-    {% for plant in plants %}
-    <div class="card">
-        <div class="image-container">
-            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="home-image">
-        </div>
-        <div class="text-container">
-            <h1>{{ plant.name }}</h1>
-            <p>{{ plant.Category }} | ₹{{ plant.price }} | {{ plant.Quantity }} in stock</p>
-        </div>
-        <a href="{% url 'SpecificPlant' plant.id %}" class="purchase-button">Look at it</a>
+    <form id="searchForm" action="{% url 'display' %}" method="get">
+        <input type="text" id="search" name="q" autocomplete="off" placeholder="Search for Plants" value="{{ query }}">
+        <div id="suggestions"></div>
+    </form>
+
+    <div id="filterSection">
+        <form method="get" id="filterForm">
+            <div class="filter-controls">
+                <select name="category" id="categorySelect" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="Indoor" {% if selected_category == 'Indoor' %}selected{% endif %}>Indoor</option>
+                    <option value="Outdoor" {% if selected_category == 'Outdoor' %}selected{% endif %}>Outdoor</option>
+                    <option value="Tree" {% if selected_category == 'Tree' %}selected{% endif %}>Tree</option>
+                </select>
+
+                <select name="sort" id="sortSelect" class="filter-select">
+                    <option value="">Sort by</option>
+                    <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                </select>
+
+                <input type="hidden" name="min_price" id="min_price_input">
+                <input type="hidden" name="max_price" id="max_price_input">
+
+                <div class="price-range-container">
+                    <button type="button" id="priceToggleBtn" class="dropdown-btn">Price Range ▼</button>
+                    <div id="priceDropdown" class="dropdown-content">
+                        <div id="price-slider"></div>
+                        <p class="price-range-text">
+                            ₹<span id="min_price_display">{{ min_price|default:real_min_price }}</span> 
+                            - ₹<span id="max_price_display">{{ max_price|default:real_max_price }}</span>
+                        </p>
+                        <button type="submit" class="apply-btn">Apply</button>
+                    </div>
+                </div>
+
+                {% if selected_category or selected_sort or min_price or max_price %}
+                    <a href="{% url 'display' %}" class="btn-reset">Reset Filters</a>
+                {% endif %}
+            </div>
+        </form>
     </div>
-    {% endfor %}
+
+    {% if plants %}
+    <div class="card-grid">
+        {% for plant in plants %}
+        <div class="card">
+            <div class="card-badges">
+                {% if plant.Quantity < 5 %}
+                    <span class="badge low-stock">Low Stock</span>
+                {% endif %}
+                {% if plant.is_new %}
+                    <span class="badge new">New</span>
+                {% endif %}
+            </div>
+            
+            <div class="image-container">
+                <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant-image">
+                <div class="image-overlay">
+                    <a href="{% url 'SpecificPlant' plant.id %}" class="quick-view">Quick View</a>
+                </div>
+            </div>
+            
+            <div class="card-content">
+                <div class="content-header">
+                    <h2 class="plant-name">{{ plant.name }}</h2>
+                    <span class="plant-category">{{ plant.Category }}</span>
+                </div>
+                
+                <div class="plant-info">
+                    <div class="price-section">
+                        <span class="price">₹{{ plant.price }}</span>
+                        {% if plant.original_price %}
+                            <span class="original-price">₹{{ plant.original_price }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="stock-info {% if plant.Quantity < 5 %}low{% endif %}">
+                        <i class="stock-icon"></i>
+                        <span>{{ plant.Quantity }} in stock</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif query %}
+    <div class="no-results-container">
+        <div class="no-results">
+            <i class="search-icon">🔍</i>
+            <h3>No Results Found</h3>
+            <p>We couldn't find any plants matching "{{ query }}"</p>
+            <a href="{% url 'display' %}" class="reset-search">Clear Search</a>
+        </div>
+    </div>
+    {% endif %}
 </div>
-{% endblock content %}
+{% endblock %}
+
+{% block script %}<script src="{% static 'js/display.js' %}"></script>{% endblock script %}

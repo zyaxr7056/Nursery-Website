@@ -1,52 +1,23 @@
-{% extends "main.html" %}
 {% load static %}
 
-{% block style %}<link rel="stylesheet" href="{% static 'css/navbar.css' %}" />{% endblock style %}
-
-{% block content %}
-<div/>
-<nav class="navbar" style="background-color:#f3fdf5; padding:12px 24px; box-shadow:0 2px 8px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:space-between; font-family:'Segoe UI',sans-serif;">
-  <a href="{% url 'home' %}" style="text-decoration:none; color:#2e7d32; font-size:24px; font-weight:bold;">
-    🌿 Nursery
-  </a>
-  <ul style="list-style:none; display:flex; align-items:center; margin:0; padding:0; gap:24px;">
-    <li><a href="{% url 'display' %}" style="text-decoration:none; color:#33691e; font-size:16px;">Shop</a></li>
-    <li><a href="{% url 'myorders' %}" style="text-decoration:none; color:#33691e; font-size:16px;">My Orders</a></li>
-    <li>
-      <a href="{% url 'cart_view' %}" class="cart-icon" style="position:relative; text-decoration:none; color:#33691e; font-size:20px;">
-        🛒
-        {% if request.session.cart and request.session.cart|length > 0 %}
-          <span id="cart-count" style="position:absolute; top:-6px; right:-12px; background-color:#e53935; color:white; border-radius:50%; padding:2px 6px; font-size:12px;">
-            {{ request.session.cart|length }}
-          </span>
-        {% endif %}
-      </a>
-    </li>
-
-    {% if user.is_authenticated %}
-      <li class="dropdown">
-        <button class="user-menu dropdown-toggle" onclick="toggleDropdown(event)" style="background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:8px; color:#33691e; font-size:16px;">
-          👤 {{ user.username }}
-          <span class="dropdown-arrow" style="font-size:10px;">▼</span>
-        </button>
-        <div class="dropdown-menu" id="userDropdown" style="display:none; position:absolute; right:0; top:100%; background-color:white; box-shadow:0 2px 8px rgba(0,0,0,0.1); border-radius:8px; padding:8px 0; min-width:150px;">
-          <a href="{% url 'account_logout' %}" class="dropdown-item" style="display:block; padding:8px 16px; text-decoration:none; color:#d32f2f; font-size:14px;">
-            🚪 Logout
-          </a>
-        </div>
-      </li>
-    {% else %}
-      <li>
-        <a href="{% url 'account_login' %}" class="login-btn" style="text-decoration:none; background-color:#2e7d32; color:white; padding:8px 16px; border-radius:20px; font-size:14px; transition:all 0.3s ease;">
-          Login
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="{% url 'home' %}" class="navbar-logo">
+            <i class="fas fa-leaf"></i>
+            <span>Rudra Flowers & Plants</span>
         </a>
-      </li>
-    {% endif %}
-  </ul>
+        
+        <!-- Icons for cart and user -->
+        <div class="nav-icons">
+            <a href="#" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-counter">0</span>
+            </a>
+            <button class="user-menu">
+                <i class="fas fa-user-circle"></i>
+            </button>
+        </div>
+    </div>
 </nav>
-</div>
-{% endblock  %}
 
-{% block  script%}
 <script src="{% static 'js/navbar.js' %}"></script>
-{% endblock  %}

@@ -1,0 +1,42 @@
+<div class="card">
+    <div class="card-badges">
+        {% if plant.Quantity < 5 %}
+            <span class="badge low-stock">Low Stock</span>
+        {% endif %}
+        {% if plant.is_new %}
+            <span class="badge new">New</span>
+        {% endif %}
+    </div>
+
+    <div class="image-container">
+        {% if plant.image %}
+            <img src="{{ plant.image.url }}" alt="{{ plant.name }}" class="plant-image">
+        {% else %}
+            <img src="/static/default-plant.jpg" alt="No image" class="plant-image">
+        {% endif %}
+        <div class="image-overlay">
+            <a href="{% url 'SpecificPlant' plant.id %}" class="quick-view">Quick View</a>
+        </div>
+    </div>
+
+    <div class="card-content">
+        <div class="content-header">
+            <h2 class="plant-name">{{ plant.name }}</h2>
+            <span class="plant-category">{{ plant.Category }}</span>
+        </div>
+        <div class="plant-info">
+            <div class="price-section">
+                <span class="price">₹{{ plant.price }}</span>
+                {% if plant.original_price %}
+                    <span class="original-price">₹{{ plant.original_price }}</span>
+                {% endif %}
+            </div>
+            <div class="stock-info {% if plant.Quantity < 5 %}low{% endif %}">
+                <i class="stock-icon"></i>
+                <span>{{ plant.Quantity }} in stock</span>
+            </div>
+        </div>
+    </div>
+
+    <a href="{% url 'SpecificPlant' plant.id %}" class="purchase-button">🛒 Purchase</a>
+</div> 

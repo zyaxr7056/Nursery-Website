@@ -160,7 +160,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'APP': {
             'client_id': config('CLIENT_ID'),
             'secret': config('SECRET_KEY'),
-            'key': ''
         },
         'SCOPE': [
             'profile',
@@ -213,8 +212,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [ BASE_DIR / 'static',]
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

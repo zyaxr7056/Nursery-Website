@@ -25,7 +25,8 @@ def profile(request):
 
     
 def home(request):
-    return render(request, 'main.html', {})
+    plants = Plant.objects.all()
+    return render(request, 'main.html', {'plants': plants})
 
 
 # def display(request):

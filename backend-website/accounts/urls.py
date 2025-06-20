@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import (
-    home, display, SpecificPlant, checkout, cart_view,
+    display, SpecificPlant, checkout, cart_view,
     add_to_cart, remove_from_cart, update_cart_quantity,
     order_payment, callback, shipping_details,contact_page,my_orders
 )
@@ -9,7 +9,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('', display, name='home'),
     # path('profile/',profile ,name='profile'),
     # path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('display/', display, name='display'),
@@ -25,4 +25,4 @@ urlpatterns = [
     path('contact/',contact_page,name='contact_page'),
     path('my-orders/', my_orders, name='myorders'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

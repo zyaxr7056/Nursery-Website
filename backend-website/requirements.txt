@@ -13,3 +13,5 @@ razorpay
 gunicorn
 whitenoise
 psycopg[binary,pool]
+vercel-python 
+vercel-python-wsgi

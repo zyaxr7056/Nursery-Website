@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function toggleDropdown(event) {
+    // Only allow dropdown on desktop
+    if (window.innerWidth < 769) return;
     event.preventDefault();
     const dropdownMenu = document.getElementById('userDropdown');
     const dropdownArrow = event.currentTarget.querySelector('.dropdown-arrow');
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close dropdown when clicking outside
     document.addEventListener('click', function closeDropdown(e) {
-        if (!e.target.closest('.dropdown')) {
+        if (!e.target.closest('.profile-desktop-dropdown')) {
             dropdownMenu.style.display = 'none';
             dropdownArrow.style.transform = 'rotate(0)';
             document.removeEventListener('click', closeDropdown);
@@ -98,6 +100,32 @@ document.addEventListener('DOMContentLoaded', () => {
           arrow.style.transform = 'rotate(0)';
         }
       }
+    });
+  }
+
+  // Mobile nav and blur overlay logic (match landing page)
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('mainNavLinks');
+  const blurOverlay = document.getElementById('navBlurOverlay');
+
+  function closeMobileNav() {
+    navLinks.classList.remove('open');
+    blurOverlay.classList.remove('active');
+  }
+
+  if (menuToggle && navLinks && blurOverlay) {
+    menuToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isOpen = navLinks.classList.toggle('open');
+      if (isOpen) {
+        blurOverlay.classList.add('active');
+      } else {
+        blurOverlay.classList.remove('active');
+      }
+    });
+    blurOverlay.addEventListener('click', closeMobileNav);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMobileNav();
     });
   }
 });

@@ -1,52 +1,65 @@
-{% extends "main.html" %}
-{% load static %}
-
-{% block style %}<link rel="stylesheet" href="{% static 'css/navbar.css' %}" />{% endblock style %}
-
+{% extends "main.html" %} 
+{% load static %} 
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+<link rel="stylesheet" href="{% static 'css/home_page.css' %}" />
+{% endblock style %} 
 {% block content %}
-<div/>
-<nav class="navbar" style="background-color:#f3fdf5; padding:12px 24px; box-shadow:0 2px 8px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:space-between; font-family:'Segoe UI',sans-serif;">
-  <a href="{% url 'home' %}" style="text-decoration:none; color:#2e7d32; font-size:24px; font-weight:bold;">
-    🌿 Nursery
-  </a>
-  <ul style="list-style:none; display:flex; align-items:center; margin:0; padding:0; gap:24px;">
-    <li><a href="{% url 'display' %}" style="text-decoration:none; color:#33691e; font-size:16px;">Shop</a></li>
-    <li><a href="{% url 'myorders' %}" style="text-decoration:none; color:#33691e; font-size:16px;">My Orders</a></li>
+<nav class="navbar">
+  <a href="{% url 'home' %}" class="nav-brand"> 🌿 Nursery </a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+  <ul class="nav-links" id="mainNavLinks">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'display' %}">Shop</a></li>
+    <li><a href="{% url 'contact_page' %}">Contact</a></li>
+    <li><a href="{% url 'myorders' %}">My Orders</a></li>
     <li>
-      <a href="{% url 'cart_view' %}" class="cart-icon" style="position:relative; text-decoration:none; color:#33691e; font-size:20px;">
-        🛒
+      <a href="{% url 'cart_view' %}" class="cart-icon" aria-label="Cart">
+        <svg
+          width="24"
+          height="24"
+          fill="none"
+          stroke="#2e7d32"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          viewBox="0 0 24 24"
+          class="cart-svg"
+          style="vertical-align: middle"
+        >
+          <circle cx="9" cy="21" r="1.5" />
+          <circle cx="19" cy="21" r="1.5" />
+          <path d="M2.5 3h2l2.5 13h11l2-8H6.5" />
+        </svg>
         {% if request.session.cart and request.session.cart|length > 0 %}
-          <span id="cart-count" style="position:absolute; top:-6px; right:-12px; background-color:#e53935; color:white; border-radius:50%; padding:2px 6px; font-size:12px;">
-            {{ request.session.cart|length }}
-          </span>
+        <span id="cart-count">{{ request.session.cart|length }}</span>
         {% endif %}
       </a>
     </li>
-
     {% if user.is_authenticated %}
-      <li class="dropdown">
-        <button class="user-menu dropdown-toggle" onclick="toggleDropdown(event)" style="background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:8px; color:#33691e; font-size:16px;">
-          👤 {{ user.username }}
-          <span class="dropdown-arrow" style="font-size:10px;">▼</span>
-        </button>
-        <div class="dropdown-menu" id="userDropdown" style="display:none; position:absolute; right:0; top:100%; background-color:white; box-shadow:0 2px 8px rgba(0,0,0,0.1); border-radius:8px; padding:8px 0; min-width:150px;">
-          <a href="{% url 'account_logout' %}" class="dropdown-item" style="display:block; padding:8px 16px; text-decoration:none; color:#d32f2f; font-size:14px;">
-            🚪 Logout
-          </a>
-        </div>
-      </li>
+    <li class="profile-desktop-dropdown">
+      <button class="user-menu dropdown-toggle" onclick="toggleDropdown(event)">
+        👤 {{ user.username }}
+        <span class="dropdown-arrow">▼</span>
+      </button>
+      <div class="dropdown-menu" id="userDropdown">
+        <a href="/profile_view/" class="dropdown-item">Profile</a>
+        <a href="{% url 'account_logout' %}" class="dropdown-item">🚪 Logout</a>
+      </div>
+    </li>
+    <li class="profile-mobile-link"><a href="{% url 'profile_view' %}">Profile</a></li>
+    <li class="profile-mobile-link">
+      <a href="{% url 'account_logout' %}">Logout</a>
+    </li>
     {% else %}
-      <li>
-        <a href="{% url 'account_login' %}" class="login-btn" style="text-decoration:none; background-color:#2e7d32; color:white; padding:8px 16px; border-radius:20px; font-size:14px; transition:all 0.3s ease;">
-          Login
-        </a>
-      </li>
+    <li>
+      <a href="{% url 'account_login' %}" class="login-btn"> Login </a>
+    </li>
     {% endif %}
   </ul>
 </nav>
-</div>
-{% endblock  %}
-
-{% block  script%}
+<div class="blur-overlay" id="navBlurOverlay"></div>
+<div style="padding-top: 80px"></div>
+{% endblock %} {% block script%}
 <script src="{% static 'js/navbar.js' %}"></script>
-{% endblock  %}
+{% endblock %}

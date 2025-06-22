@@ -1,6 +1,5 @@
 {% load static%}
 
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,12 +10,18 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
     />
-    {% block style %}<link rel="stylesheet" href="{% static 'css/home_page.css'%}" />{% endblock style %}
-    </head>
+    {% block style %}
+    <link rel="stylesheet" href="{% static 'css/home_page.css'%}" />
+    {% endblock style %}
+  </head>
   <body>
-    {% block content %}
-    {% comment %} @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap'); {% endcomment %}
-
+    {% block content %} {% comment %} @import
+    url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    {% endcomment %}
+    <video autoplay muted loop playsinline id="bg-video">
+      <source src="{% static 'videos/landing_video.mp4' %}" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
     <nav>
       <div class="logo">Rudra Nursery</div>
       <button class="menu-toggle" onclick="toggleMenu()">☰</button>
@@ -113,10 +118,8 @@
         </address>
       </div>
     </section>
-    {% endblock content %}
-    
-   {% block script %}
-   <script src="{% static 'js/home_page.js' %}"></script>
+    {% endblock content %} {% block script %}
+    <script src="{% static 'js/home_page.js' %}"></script>
     {% endblock script %}
-</body>
+  </body>
 </html>

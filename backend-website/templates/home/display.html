@@ -3,7 +3,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/display.css' %}">
-{% endblock %}
+{% endblock style %}
 
 {% block content %}
 {% include 'home/navbar.html' %}
@@ -14,6 +14,8 @@
         <input type="text" id="search" name="q" autocomplete="off" placeholder="Search for Plants" value="{{ query }}">
         <div id="suggestions"></div>
     </form>
+
+    
 
     <div id="filterSection">
         <form method="get" id="filterForm">
@@ -34,7 +36,7 @@
                 <input type="hidden" name="min_price" id="min_price_input">
                 <input type="hidden" name="max_price" id="max_price_input">
 
-                <div class="price-range-container">
+                {% comment %} <div class="price-range-container">
                     <button type="button" id="priceToggleBtn" class="dropdown-btn">Price Range ▼</button>
                     <div id="priceDropdown" class="dropdown-content">
                         <div id="price-slider"></div>
@@ -44,7 +46,7 @@
                         </p>
                         <button type="submit" class="apply-btn">Apply</button>
                     </div>
-                </div>
+                </div> {% endcomment %}
 
                 {% if selected_category or selected_sort or min_price or max_price %}
                     <a href="{% url 'display' %}" class="btn-reset">Reset Filters</a>
@@ -108,6 +110,5 @@
     </div>
     {% endif %}
 </div>
-{% endblock %}
-
 {% block script %}<script src="{% static 'js/display.js' %}"></script>{% endblock script %}
+{% endblock %}

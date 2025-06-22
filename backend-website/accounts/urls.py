@@ -2,7 +2,7 @@ from django.urls import path, include
 from .views import (
     home, display, SpecificPlant, checkout, cart_view,
     add_to_cart, remove_from_cart, update_cart_quantity,
-    order_payment, callback, shipping_details,contact_page,my_orders
+    order_payment, callback, shipping_details,contact_page,my_orders,profile_view
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -15,6 +15,7 @@ urlpatterns = [
     path('display/', display, name='display'),
     path('display/<int:plant_id>/', SpecificPlant, name='SpecificPlant'),
     path('display/<int:plant_id>/checkout/', checkout, name='checkout'),
+    path('profile_view/',profile_view ,name='profile_view'),
     path('cart/', cart_view, name='cart_view'),
     path('add-to-cart/<int:plant_id>/', add_to_cart, name='add_to_cart'),
     path('remove-from-cart/<int:plant_id>/', remove_from_cart, name='remove_from_cart'),

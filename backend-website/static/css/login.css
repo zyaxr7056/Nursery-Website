@@ -203,4 +203,8 @@ button.submit-btn:hover {
 
 html, body{
   background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/896f94ee-39a7-4d8b-9551-17a68fbd9de2.png') center center / cover no-repeat;
+  overflow-y: auto; /* ✅ Enables vertical scrolling */
+}
+body {
+  overflow-y: auto;
 }

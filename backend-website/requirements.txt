@@ -1,0 +1,17 @@
+Django >=5.2
+dotenv
+psycopg 
+Pillow
+django-allauth[socialaccount]
+django-allauth-ui
+# django-widgets-tweaks
+dj-database-url
+python-decouple
+django-unfold
+django-import-export[all]
+razorpay
+gunicorn
+whitenoise
+psycopg[binary,pool]
+vercel-python 
+vercel-python-wsgi

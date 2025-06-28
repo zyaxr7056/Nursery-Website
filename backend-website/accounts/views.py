@@ -16,6 +16,7 @@ from django.template.defaultfilters import register
 import os 
 from data.forms import ContactMessageForm
 from django.db.models import Min, Max
+from data.forms import ProfileDetailForm
 
 @login_required
 def profile(request):
@@ -76,6 +77,21 @@ def display(request):
         'real_min_price': real_min_price,
         'real_max_price': real_max_price
     })
+
+@login_required
+def profile_view(request):
+    form = ProfileDetailForm()
+    submitted = False
+
+    if request.method == 'POST':
+        form = ProfileDetailForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user  # Assign the logged-in user
+            profile.save()
+            submitted = True
+
+    return render(request, 'profile.html', {'user': request.user, 'form': form, 'submitted': submitted})
 
 @login_required
 def search_suggestions(request):

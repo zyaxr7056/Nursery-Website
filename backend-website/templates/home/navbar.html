@@ -1,23 +1,65 @@
-{% load static %}
-
+{% extends "main.html" %} 
+{% load static %} 
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+<link rel="stylesheet" href="{% static 'css/home_page.css' %}" />
+{% endblock style %} 
+{% block content %}
 <nav class="navbar">
-    <div class="navbar-container">
-        <a href="{% url 'home' %}" class="navbar-logo">
-            <i class="fas fa-leaf"></i>
-            <span>Rudra Flowers & Plants</span>
-        </a>
-        
-        <!-- Icons for cart and user -->
-        <div class="nav-icons">
-            <a href="#" class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-counter">0</span>
-            </a>
-            <button class="user-menu">
-                <i class="fas fa-user-circle"></i>
-            </button>
-        </div>
-    </div>
+  <a href="{% url 'home' %}" class="nav-brand"> 🌿 Nursery </a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+  <ul class="nav-links" id="mainNavLinks">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'display' %}">Shop</a></li>
+    <li><a href="{% url 'contact_page' %}">Contact</a></li>
+    <li><a href="{% url 'myorders' %}">My Orders</a></li>
+    <li>
+      <a href="{% url 'cart_view' %}" class="cart-icon" aria-label="Cart">
+        <svg
+          width="24"
+          height="24"
+          fill="none"
+          stroke="#2e7d32"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          viewBox="0 0 24 24"
+          class="cart-svg"
+          style="vertical-align: middle"
+        >
+          <circle cx="9" cy="21" r="1.5" />
+          <circle cx="19" cy="21" r="1.5" />
+          <path d="M2.5 3h2l2.5 13h11l2-8H6.5" />
+        </svg>
+        {% if request.session.cart and request.session.cart|length > 0 %}
+        <span id="cart-count">{{ request.session.cart|length }}</span>
+        {% endif %}
+      </a>
+    </li>
+    {% if user.is_authenticated %}
+    <li class="profile-desktop-dropdown">
+      <button class="user-menu dropdown-toggle" onclick="toggleDropdown(event)">
+        👤 {{ user.username }}
+        <span class="dropdown-arrow">▼</span>
+      </button>
+      <div class="dropdown-menu" id="userDropdown">
+        <a href="/profile_view/" class="dropdown-item">Profile</a>
+        <a href="{% url 'account_logout' %}" class="dropdown-item">🚪 Logout</a>
+      </div>
+    </li>
+    <li class="profile-mobile-link"><a href="{% url 'profile_view' %}">Profile</a></li>
+    <li class="profile-mobile-link">
+      <a href="{% url 'account_logout' %}">Logout</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{% url 'account_login' %}" class="login-btn"> Login </a>
+    </li>
+    {% endif %}
+  </ul>
 </nav>
-
+<div class="blur-overlay" id="navBlurOverlay"></div>
+<div style="padding-top: 80px"></div>
+{% endblock %} {% block script%}
 <script src="{% static 'js/navbar.js' %}"></script>
+{% endblock %}
